@@ -20,6 +20,7 @@ const clubSchema = new mongoose.Schema({
     latitude: { type: String, required: true },
     longitude: { type: String, required: true },
     description: { type: String, required: true, maxlength: 350 },
+    image: { type: String, required: true },
   }],
 })
 
