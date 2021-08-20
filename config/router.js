@@ -16,7 +16,7 @@ router.route('/register')
 router.route('/login')
   .post(auth.loginUser)
 
-// PROFILES need to add 'users.' in here
+// PROFILES need to add 'users.' in here users.userProfile
 
 router.route('/profile')
   .put(secureRoute, )
