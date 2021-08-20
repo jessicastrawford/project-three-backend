@@ -1,14 +1,14 @@
 import Club from '../models/clubs.js'
 import User from '../models/user.js'
 import clubData from './data/clubs.js'
-import { connectDb, disconnectDb, truncateDb } from './helpers.js'
+import { connectDb, disconnectDb, flushDb } from './helpers.js'
 
 async function seed() {
   try {
     await connectDb()
     console.log('🤖 Database Connected')
 
-    await truncateDb()
+    await flushDb()
     console.log('🤖 Database Dropped')
 
     const user = await User.create({
