@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { dbURI } from '../../config/environment.js'
+import { dbURI } from '../config/environment.js'
 
 export function connectToDb() {
   const opts = {
