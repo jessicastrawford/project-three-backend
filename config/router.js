@@ -19,10 +19,10 @@ router.route('/login')
 // PROFILES need to add 'users.' in here users.userProfile
 
 router.route('/profile')
-  .put(secureRoute, )
+  .put(secureRoute)
 
 router.route('/update-profile')
-  .put(secureRoute, )
+  .put(secureRoute)
 
 
 

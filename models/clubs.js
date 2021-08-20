@@ -13,7 +13,11 @@ const clubSchema = new mongoose.Schema({
   capacity: { type: Number, required: true },
   stadiumInfo: { type: String, required: true },
 
-  pubs: [{
+  pubs: [pubSchema],
+})
+
+const pubSchema = new mongoose.Schema(
+  {
     pubName: { type: String, required: true },
     comments: [commentsSchema],
     userRating: { type: Number, required: true, min: 1, max: 5 },
@@ -21,8 +25,8 @@ const clubSchema = new mongoose.Schema({
     longitude: { type: Number, required: true },
     description: { type: String, required: true, maxlength: 350 },
     image: { type: String, required: true },
-  }],
-})
+  }
+)
 
 const commentsSchema = new mongoose.Schema(
   {
