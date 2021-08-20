@@ -1,4 +1,4 @@
-import mongoose, { plugin } from 'mongoose'
+import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
@@ -50,7 +50,7 @@ userSchema.methods.validatePassword = function(password) {
   return bcrypt.compareSync(password, this.password)
 }
 
-userSchema,plugin(mongooseUniqueValidator)
+userSchema.plugin(mongooseUniqueValidator)
 
 const User = mongoose.model('User', userSchema)
 
