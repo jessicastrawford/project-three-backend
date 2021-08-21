@@ -22,6 +22,13 @@ router.route('/clubs/:clubId/pubs')
 router.route('/clubs/:clubId/pubs/:pubId')
   .delete(clubs.pubDelete) 
 
+// * COMMENTS
+router.route('/clubs/:clubId/pubs/:pubId')
+  .post(clubs.commentCreate)
+
+router.route('/clubs/:clubId/pubs/:pubId/comments/:commentId')
+  .delete(clubs.commentDelete)
+
 // * USERS
 router.post('/register', auth.register)
 router.post('/login', auth.login)

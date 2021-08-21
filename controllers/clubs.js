@@ -94,6 +94,37 @@ async function pubDelete(req, res, next) {
   }
 }
 
+async function commentCreate(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pub = await club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    pub.comments.push(req.body)
+    await club.save()
+    return res.status(201).json(club)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function commentDelete(req, res, next) {
+  const { clubId, pubId, commentId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pub = club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    const commentToDelete = pub.comments.id(commentId)
+    await commentToDelete.remove()
+    await club.save()
+    return res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+}
+
 
 export default {
   index: clubIndex,
@@ -103,4 +134,6 @@ export default {
   update: clubUpdate,
   pubCreate: pubCreate,
   pubDelete: pubDelete,
+  commentCreate: commentCreate,
+  commentDelete: commentDelete,
 }
