@@ -15,6 +15,13 @@ router.route('/clubs/:clubId')
   .delete(secureRoute, clubs.delete)
   .put(secureRoute, clubs.update)
 
+// * PUBS
+router.route('/clubs/:clubId/pubs')
+  .post(clubs.pubCreate)
+
+router.route('/clubs/:clubId/pubs/:pubId')
+  .delete(clubs.pubDelete) 
+
 // * USERS
 router.post('/register', auth.register)
 router.post('/login', auth.login)
