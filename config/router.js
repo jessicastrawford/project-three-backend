@@ -8,12 +8,12 @@ const router = express.Router()
 // * CLUBS
 router.route('/clubs')
   .get(clubs.index)
-  .post(secureRoute, clubs.create)
+  .post(clubs.create)
 
 router.route('/clubs/:clubId')
   .get(clubs.show)
   .delete(secureRoute, clubs.delete)
-  .put(secureRoute, clubs.update)
+  .put(clubs.update)
 
 // * PUBS
 router.route('/clubs/:clubId/pubs')

@@ -1,5 +1,5 @@
 import Club from '../models/clubs.js'
-import { NotFound, Unauthorized } from '../lib/errors.js'
+import { NotFound } from '../lib/errors.js'
 
 async function clubIndex(_req, res, next) {
   try {
@@ -35,12 +35,12 @@ async function clubCreate(req, res, next) {
 
 async function clubDelete(req, res, next) {
   const { clubId } = req.params
-  const { currentUserId } = req
+  // const { currentUserId } = req
   try {
     const clubToDelete = await Club.findById(clubId)
-    if (clubToDelete.addedBy.equals(currentUserId)) {
-      throw new Unauthorized()
-    }
+    // if (clubToDelete.addedBy.equals(currentUserId)) {
+    //   throw new Unauthorized()
+    // }
     if (!clubToDelete) {
       throw new NotFound()
     }
