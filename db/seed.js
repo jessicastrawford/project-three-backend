@@ -1,11 +1,11 @@
 import Club from '../models/clubs.js'
 import User from '../models/user.js'
 import clubData from './data/clubs.js'
-import { connectToDb, disconnectDb, flushDb } from './helpers.js'
+import { connectDb, disconnectDb, flushDb } from './helpers.js'
 
 async function seed() {
   try {
-    await connectToDb()
+    await connectDb()
     console.log('🤖 Database Connected')
 
     await flushDb()

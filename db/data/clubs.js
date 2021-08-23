@@ -2,7 +2,6 @@ export default [
   {
     clubName: 'Tottenham Hotspur F.C.',
     logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/1200px-Tottenham_Hotspur.svg.png',
-    league: 'Premier League',
     mainImage: 'https://i.guim.co.uk/img/media/0c43389417f433da9cde5604c38fc4e6f8940de2/0_0_4500_3000/master/4500.jpg?width=465&quality=45&auto=format&fit=max&dpr=2&s=0570ad2926dae5cc1c631a58e6b83405',
     imageTwo: 'https://e0.365dm.com/19/03/2048x1152/skysports-tottenham-hotspur_4618712.jpg',
     imageThree: 'https://www.football-stadiums.co.uk/images/tottenham-stadium/c.jpg',
@@ -15,7 +14,7 @@ export default [
     pubs: [
       {
         pubName: 'The Bricklayers',
-        comments: [],
+        comments: [''],
         userRating: 5,
         latitude: 51.49425,
         longitude: 0.08555,
@@ -24,7 +23,7 @@ export default [
       },
       {
         pubName: 'The Bill Nicholson Pub',
-        comments: [],
+        comments: [''],
         userRating: 5,
         latitude: 51.6057,
         longitude: 0.0616,
