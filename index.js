@@ -1,6 +1,6 @@
 import express from 'express'
 import router from './config/router.js'
-import { connectToDb } from './db/data/helpers.js'
+import { connectToDb } from './db/helpers.js'
 import logger from './lib/logger.js'
 import errorHandler from './lib/errorHandler.js'
 import { port } from './config/environment.js'
