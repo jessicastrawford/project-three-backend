@@ -9,11 +9,27 @@ const router = express.Router()
 router.route('/clubs')
   .get(clubs.index)
   .post(secureRoute, clubs.create)
+  .post(clubs.create)
 
 router.route('/clubs/:clubId')
-  .get(clubs.show)
   .delete(secureRoute, clubs.delete)
   .put(secureRoute, clubs.update)
+
+  .put(clubs.update)
+
+// * PUBS
+router.route('/clubs/:clubId/pubs')
+  .post(clubs.pubCreate)
+
+router.route('/clubs/:clubId/pubs/:pubId')
+  .delete(clubs.pubDelete) 
+
+// * COMMENTS
+router.route('/clubs/:clubId/pubs/:pubId')
+  .post(clubs.commentCreate)
+
+router.route('/clubs/:clubId/pubs/:pubId/comments/:commentId')
+  .delete(clubs.commentDelete)
 
 // * USERS
 router.post('/register', auth.register)

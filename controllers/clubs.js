@@ -14,6 +14,10 @@ async function clubShow(req, res, next) {
   const { clubId } = req.params
   try {
     const clubToFind = await Club.findById(clubId)
+<<<<<<< HEAD
+=======
+      .populate('addedBy')
+>>>>>>> development
 
     if (!clubToFind) throw new NotFound()
     return res.status(200).json(clubToFind)
@@ -23,8 +27,13 @@ async function clubShow(req, res, next) {
 }
 
 async function clubCreate(req, res, next) {
+  const { currentUser } = req
   try {
+<<<<<<< HEAD
     const createdClub = await Club.create(req.body)
+=======
+    const createdClub = await Club.create({ ...req.body, addedBy: currentUser })
+>>>>>>> development
     return res.status(201).json(createdClub)
   } catch (err) {
     next(err)
@@ -33,8 +42,15 @@ async function clubCreate(req, res, next) {
 
 async function clubDelete(req, res, next) {
   const { clubId } = req.params
+  // const { currentUserId } = req
   try {
     const clubToDelete = await Club.findById(clubId)
+<<<<<<< HEAD
+=======
+    // if (clubToDelete.addedBy.equals(currentUserId)) {
+    //   throw new Unauthorized()
+    // }
+>>>>>>> development
     if (!clubToDelete) {
       throw new NotFound()
     }
@@ -60,6 +76,68 @@ async function clubUpdate(req, res, next) {
   }
 }
 
+<<<<<<< HEAD
+=======
+async function pubCreate(req, res, next) {
+  const { clubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    club.pubs.push(req.body)
+    await club.save()
+    return res.status(201).json(club)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function pubDelete(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pubToDelete = club.pubs.id(pubId)
+    if (!pubToDelete) throw new NotFound()
+    await pubToDelete.remove()
+    await club.save()
+    return res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function commentCreate(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pub = await club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    pub.comments.push(req.body)
+    await club.save()
+    return res.status(201).json(club)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function commentDelete(req, res, next) {
+  const { clubId, pubId, commentId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pub = club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    const commentToDelete = pub.comments.id(commentId)
+    await commentToDelete.remove()
+    await club.save()
+    return res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+}
+
+>>>>>>> development
 
 export default {
   index: clubIndex,
@@ -67,4 +145,11 @@ export default {
   show: clubShow,
   delete: clubDelete,
   update: clubUpdate,
+<<<<<<< HEAD
+=======
+  pubCreate: pubCreate,
+  pubDelete: pubDelete,
+  commentCreate: commentCreate,
+  commentDelete: commentDelete,
+>>>>>>> development
 }

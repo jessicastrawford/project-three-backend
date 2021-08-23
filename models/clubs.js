@@ -25,6 +25,7 @@ const pubSchema = new mongoose.Schema(
 
 const clubSchema = new mongoose.Schema({
   clubName: { type: String, required: true },
+  league: { type: String, required: true },
   logo: { type: String, required: true },
   mainImage: { type: String, required: true },
   imageTwo: { type: String, required: true },
