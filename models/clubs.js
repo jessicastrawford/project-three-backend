@@ -1,8 +1,31 @@
 import mongoose from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
+const commentSchema = new mongoose.Schema(
+  {
+    text: { type: String, required: true, maxlength: 350 },
+    rating: { type: Number, required: true, min: 1, max: 5 },
+  },
+  {
+    timestamps: true,
+  }
+)
+
+const pubSchema = new mongoose.Schema(
+  {
+    pubName: { type: String, required: true },
+    comments: [commentSchema],
+    userRating: { type: Number, required: true, min: 1, max: 5 },
+    latitude: { type: Number, required: true },
+    longitude: { type: Number, required: true },
+    description: { type: String, required: true, maxlength: 350 },
+    image: { type: String, required: true },
+  }
+)
+
 const clubSchema = new mongoose.Schema({
   clubName: { type: String, required: true },
+  league: { type: String, required: true },
   logo: { type: String, required: true },
   mainImage: { type: String, required: true },
   imageTwo: { type: String, required: true },
@@ -15,28 +38,6 @@ const clubSchema = new mongoose.Schema({
 
   pubs: [pubSchema],
 })
-
-const pubSchema = new mongoose.Schema(
-  {
-    pubName: { type: String, required: true },
-    comments: [commentsSchema],
-    userRating: { type: Number, required: true, min: 1, max: 5 },
-    latitude: { type: Number, required: true },
-    longitude: { type: Number, required: true },
-    description: { type: String, required: true, maxlength: 350 },
-    image: { type: String, required: true },
-  }
-)
-
-const commentsSchema = new mongoose.Schema(
-  {
-    text: { type: String, required: true, maxlength: 350 },
-    rating: { type: Number, required: true, min: 1, max: 5 },
-  },
-  {
-    timestamps: true,
-  }
-)
 
 clubSchema.plugin(mongooseUniqueValidator)
 

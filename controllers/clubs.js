@@ -1,19 +1,10 @@
-import Clubs from '../models/clubs.js'
+import Club from '../models/clubs.js'
 import { NotFound } from '../lib/errors.js'
 
 async function clubIndex(_req, res, next) {
   try {
-    const clubs = await Clubs.find()
+    const clubs = await Club.find()
     return res.status(200).json(clubs)
-  } catch (err) {
-    next(err)
-  }
-}
-
-async function clubCreate(req, res, next) {
-  try {
-    const createdClub = await Clubs.create(req.body)
-    return res.status(201).json(createdClub)
   } catch (err) {
     next(err)
   }
@@ -22,11 +13,39 @@ async function clubCreate(req, res, next) {
 async function clubShow(req, res, next) {
   const { clubId } = req.params
   try {
-    const foundClub = await Clubs.findById(clubId)
-    if (!foundClub) {
+    const clubToFind = await Club.findById(clubId)
+      .populate('addedBy')
+
+    if (!clubToFind) throw new NotFound()
+    return res.status(200).json(clubToFind)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function clubCreate(req, res, next) {
+  const { currentUser } = req
+  try {
+    const createdClub = await Club.create({ ...req.body, addedBy: currentUser })
+    return res.status(201).json(createdClub)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function clubDelete(req, res, next) {
+  const { clubId } = req.params
+  // const { currentUserId } = req
+  try {
+    const clubToDelete = await Club.findById(clubId)
+    // if (clubToDelete.addedBy.equals(currentUserId)) {
+    //   throw new Unauthorized()
+    // }
+    if (!clubToDelete) {
       throw new NotFound()
     }
-    return res.status(200).json(foundClub)
+    await clubToDelete.remove()
+    return res.sendStatus(204)
   } catch (err) {
     next(err)
   }
@@ -35,11 +54,10 @@ async function clubShow(req, res, next) {
 async function clubUpdate(req, res, next) {
   const { clubId } = req.params
   try {
-    const clubToUpdate = await Clubs.findById(clubId)
+    const clubToUpdate = await Club.findByIdAndUpdate(clubId)
     if (!clubToUpdate) {
       throw new NotFound()
     }
-    await clubToUpdate.save()
     Object.assign(clubToUpdate, req.body)
     await clubToUpdate.save()
     return res.status(202).json(clubToUpdate)
@@ -48,14 +66,59 @@ async function clubUpdate(req, res, next) {
   }
 }
 
-async function clubDelete(req, res, next) {
+async function pubCreate(req, res, next) {
   const { clubId } = req.params
   try {
-    const clubToDelete = await Clubs.findById(clubId)
-    if (!clubToDelete) {
-      throw new NotFound()
-    }
-    await clubToDelete.remove() 
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    club.pubs.push(req.body)
+    await club.save()
+    return res.status(201).json(club)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function pubDelete(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pubToDelete = club.pubs.id(pubId)
+    if (!pubToDelete) throw new NotFound()
+    await pubToDelete.remove()
+    await club.save()
+    return res.sendStatus(204)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function commentCreate(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pub = await club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    pub.comments.push(req.body)
+    await club.save()
+    return res.status(201).json(club)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function commentDelete(req, res, next) {
+  const { clubId, pubId, commentId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+    if (!club) throw new NotFound()
+    const pub = club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    const commentToDelete = pub.comments.id(commentId)
+    await commentToDelete.remove()
+    await club.save()
     return res.sendStatus(204)
   } catch (err) {
     next(err)
@@ -67,6 +130,10 @@ export default {
   index: clubIndex,
   create: clubCreate,
   show: clubShow,
-  update: clubUpdate,
   delete: clubDelete,
+  update: clubUpdate,
+  pubCreate: pubCreate,
+  pubDelete: pubDelete,
+  commentCreate: commentCreate,
+  commentDelete: commentDelete,
 }

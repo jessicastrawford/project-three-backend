@@ -11,12 +11,12 @@ const userSchema = new mongoose.Schema({
 })
 
 // ! Comment back in when linking Comments to Users is required
-// userSchema.set('toJSON', {
-//   transform(_doc, json) {
-//     delete json.password
-//     return json
-//   },
-// })
+userSchema.set('toJSON', {
+  transform(_doc, json) {
+    delete json.password
+    return json
+  },
+})
 
 
 // * Sets up password confirmation
