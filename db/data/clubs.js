@@ -161,7 +161,7 @@ export default [
     longitude: -0.2322,
     location: 'Shepherd\'s Bush, London',
     capacity: 18439,
-    stadiumInfo: 'Loftus Road, known as the Kiyan Prince Foundation Stadium since 2019, is an all-seater football stadium in White City, London, England, which is home to Queens Park Rangers. In 1981, it became the first stadium in British professional football to have an artificial pitch of Omniturf installed. This remained in use until 1988, after which a natural grass pitch was reintroduced.'
+    stadiumInfo: 'Loftus Road, known as the Kiyan Prince Foundation Stadium since 2019, is an all-seater football stadium in White City, London, England, which is home to Queens Park Rangers. In 1981, it became the first stadium in British professional football to have an artificial pitch of Omniturf installed. This remained in use until 1988, after which a natural grass pitch was reintroduced.',
   },
   {
     clubName: 'Leyton Orient F.C.',
