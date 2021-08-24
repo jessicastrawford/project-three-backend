@@ -11,7 +11,7 @@ export function connectToDb() {
 }
 
 export function flushDb() { 
-  if (mongoose.connection.readyState !== 0){
+  if (mongoose.connection.readyState !== 0) {
     const { collections } = mongoose.connection
 
     const promises = Object.keys(collections).map(collection =>

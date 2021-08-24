@@ -1,5 +1,5 @@
 import Club from '../models/clubs.js'
-import { NotFound } from '../lib/errors.js'
+import { NotFound, Unauthorized } from '../lib/errors.js'
 
 async function clubIndex(_req, res, next) {
   try {
@@ -15,6 +15,7 @@ async function clubShow(req, res, next) {
   try {
     const clubToFind = await Club.findById(clubId)
       .populate('addedBy')
+      .populate('clubs.addedBy')
 
     if (!clubToFind) throw new NotFound()
     return res.status(200).json(clubToFind)
@@ -35,12 +36,12 @@ async function clubCreate(req, res, next) {
 
 async function clubDelete(req, res, next) {
   const { clubId } = req.params
-  // const { currentUserId } = req
+  const { currentUser } = req
   try {
     const clubToDelete = await Club.findById(clubId)
-    // if (clubToDelete.addedBy.equals(currentUserId)) {
-    //   throw new Unauthorized()
-    // }
+    if (!currentUser.isAdmin) {
+      throw new Unauthorized()
+    }
     if (!clubToDelete) {
       throw new NotFound()
     }
@@ -53,8 +54,12 @@ async function clubDelete(req, res, next) {
 
 async function clubUpdate(req, res, next) {
   const { clubId } = req.params
+  const { currentUser } = req
   try {
     const clubToUpdate = await Club.findByIdAndUpdate(clubId)
+    if (!currentUser.isAdmin) {
+      throw new Unauthorized()
+    }
     if (!clubToUpdate) {
       throw new NotFound()
     }
@@ -68,10 +73,12 @@ async function clubUpdate(req, res, next) {
 
 async function pubCreate(req, res, next) {
   const { clubId } = req.params
+  const { currentUser } = req
   try {
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
-    club.pubs.push(req.body)
+    const createdPub = club.pubs.create({ ...req.body, addedBy: currentUser })
+    club.pubs.push(createdPub)
     await club.save()
     return res.status(201).json(club)
   } catch (err) {
@@ -81,11 +88,15 @@ async function pubCreate(req, res, next) {
 
 async function pubDelete(req, res, next) {
   const { clubId, pubId } = req.params
+  const { currentUserId, currentUser } = req
   try {
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
     const pubToDelete = club.pubs.id(pubId)
     if (!pubToDelete) throw new NotFound()
+    if (!pubToDelete.addedBy.equals(currentUserId) && !currentUser.isAdmin) {
+      throw new Unauthorized()
+    }
     await pubToDelete.remove()
     await club.save()
     return res.sendStatus(204)
@@ -96,12 +107,13 @@ async function pubDelete(req, res, next) {
 
 async function commentCreate(req, res, next) {
   const { clubId, pubId } = req.params
+  const { currentUser } = req
   try {
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
     const pub = await club.pubs.id(pubId)
     if (!pub) throw new NotFound()
-    pub.comments.push(req.body)
+    pub.comments.push({ ...req.body, addedBy: currentUser })
     await club.save()
     return res.status(201).json(club)
   } catch (err) {
@@ -111,12 +123,16 @@ async function commentCreate(req, res, next) {
 
 async function commentDelete(req, res, next) {
   const { clubId, pubId, commentId } = req.params
+  const { currentUserId, currentUser } = req
   try {
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
     const pub = club.pubs.id(pubId)
     if (!pub) throw new NotFound()
     const commentToDelete = pub.comments.id(commentId)
+    if (!commentToDelete.addedBy.equals(currentUserId) && !currentUser.isAdmin) {
+      throw new Unauthorized()
+    }
     await commentToDelete.remove()
     await club.save()
     return res.sendStatus(204)
