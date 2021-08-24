@@ -107,12 +107,13 @@ async function pubDelete(req, res, next) {
 
 async function commentCreate(req, res, next) {
   const { clubId, pubId } = req.params
+  const { currentUser } = req
   try {
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
     const pub = await club.pubs.id(pubId)
     if (!pub) throw new NotFound()
-    pub.comments.push(req.body)
+    pub.comments.push({ ...req.body, addedBy: currentUser })
     await club.save()
     return res.status(201).json(club)
   } catch (err) {
@@ -122,12 +123,16 @@ async function commentCreate(req, res, next) {
 
 async function commentDelete(req, res, next) {
   const { clubId, pubId, commentId } = req.params
+  const { currentUserId, currentUser } = req
   try {
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
     const pub = club.pubs.id(pubId)
     if (!pub) throw new NotFound()
     const commentToDelete = pub.comments.id(commentId)
+    if (!commentToDelete.addedBy.equals(currentUserId) && !currentUser.isAdmin) {
+      throw new Unauthorized()
+    }
     await commentToDelete.remove()
     await club.save()
     return res.sendStatus(204)

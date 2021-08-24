@@ -24,10 +24,10 @@ router.route('/clubs/:clubId/pubs/:pubId')
 
 // * COMMENTS
 router.route('/clubs/:clubId/pubs/:pubId')
-  .post(clubs.commentCreate)
+  .post(secureRoute, clubs.commentCreate)
 
 router.route('/clubs/:clubId/pubs/:pubId/comments/:commentId')
-  .delete(clubs.commentDelete)
+  .delete(secureRoute, clubs.commentDelete)
 
 // * USERS
 router.post('/register', auth.register)
