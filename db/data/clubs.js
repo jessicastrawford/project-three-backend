@@ -369,7 +369,7 @@ export default [
         latitude: 51.5041,
         longitude: -0.2181,
         description: 'Belushi\'s is the best place to head if you want to watch the sport and get a drink and a bite to eat.',
-        image: '',
+        image: 'https://img.tagvenue.com/resize/ff/e1/widen-1680-noupsize;6905-belushis-shepherds-bush-venue.jpg',
       }
     ],
   },

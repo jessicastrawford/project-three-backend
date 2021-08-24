@@ -1,6 +1,7 @@
 import Club from '../models/clubs.js'
 import User from '../models/user.js'
 import clubData from './data/clubs.js'
+import faker from 'faker'
 import { connectToDb, disconnectDb, flushDb } from './helpers.js'
 
 async function seed() {
@@ -11,7 +12,7 @@ async function seed() {
     await flushDb()
     console.log('🤖 Database Dropped')
 
-    const user = await User.create({
+    const admin = await User.create({
       username: 'admin',
       email: 'admin@awaydays.com',
       password: 'pass',
@@ -21,8 +22,30 @@ async function seed() {
 
     console.log('🤖 Admin Created')
 
+    const users = []
+
+    for (let i = 0; i < 100; i++) {
+      const username = faker.internet.userName()
+      const firstName = faker.name.firstName()
+      const lastName = faker.name.lastName()
+      const email = `${firstName}.${lastName}@awaydays.com`
+      const avatar = faker.image.avatar()
+      users.push({
+        username,
+        email,
+        avatar,
+        password: 'pass',
+        passwordConfirmation: 'pass',
+        isAdmin: false,
+      })
+    }
+
+    const createdUsers = await User.create(users)
+
+    console.log(`🤖 Created ${createdUsers.length} Users`)
+
     clubData.forEach(club => {
-      club.addedBy = user
+      club.addedBy = admin
     })
 
     const club = await Club.create(clubData)

@@ -1,6 +1,6 @@
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
-import { Unauthorized } from '../lib/errors.js'
+import { NotFound, Unauthorized } from '../lib/errors.js'
 import { secret } from '../config/environment.js'
 
 async function registerUser(req, res, next) {
@@ -32,7 +32,20 @@ async function loginUser(req, res, next) {
   }
 }
 
+async function getAllUsers(req, res, next) {
+  try {
+    const users = await User.find()
+    if (!users) {
+      throw new NotFound()
+    }
+    res.status(200).json(users)
+  } catch (err) {
+    next(err)
+  }
+}
+
 export default {
   register: registerUser,
   login: loginUser,
+  usersIndex: getAllUsers,
 }

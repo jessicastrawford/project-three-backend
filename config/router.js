@@ -32,6 +32,7 @@ router.route('/clubs/:clubId/pubs/:pubId/comments/:commentId')
 // * USERS
 router.post('/register', auth.register)
 router.post('/login', auth.login)
+router.get('/users', auth.usersIndex)
 
 
 export default router
