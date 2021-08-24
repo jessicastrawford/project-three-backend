@@ -26,7 +26,6 @@ async function clubShow(req, res, next) {
 async function clubCreate(req, res, next) {
   const { currentUser } = req
   try {
-    // const createdClub = await Club.create(req.body)
     const createdClub = await Club.create({ ...req.body, addedBy: currentUser })
     return res.status(201).json(createdClub)
   } catch (err) {

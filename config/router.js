@@ -12,6 +12,7 @@ router.route('/clubs')
   .post(clubs.create)
 
 router.route('/clubs/:clubId')
+  .get(clubs.show)
   .delete(secureRoute, clubs.delete)
   .put(secureRoute, clubs.update)
 
