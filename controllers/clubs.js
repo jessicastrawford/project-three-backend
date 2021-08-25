@@ -15,7 +15,7 @@ async function clubShow(req, res, next) {
   try {
     const clubToFind = await Club.findById(clubId)
       .populate('addedBy')
-      .populate('clubs.addedBy')
+      .populate('pubs.addedBy')
 
     if (!clubToFind) throw new NotFound()
     return res.status(200).json(clubToFind)
@@ -86,6 +86,33 @@ async function pubCreate(req, res, next) {
   }
 }
 
+async function pubIndex(req, res, next) {
+  const pubs = []
+  try {
+    const clubs = await Club.find()
+    clubs.map(club => {
+      pubs.push(club.pubs)
+    })
+    return res.status(200).json(pubs)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function pubShow(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+      .populate('addedBy')
+    if (!club) throw new NotFound()
+    const pubToFind = await club.pubs.id(pubId)
+    if (!pubToFind) throw new NotFound()
+    return res.status(200).json(pubToFind)
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function pubDelete(req, res, next) {
   const { clubId, pubId } = req.params
   const { currentUserId, currentUser } = req
@@ -149,6 +176,8 @@ export default {
   delete: clubDelete,
   update: clubUpdate,
   pubCreate: pubCreate,
+  pubIndex: pubIndex,
+  pubShow: pubShow,
   pubDelete: pubDelete,
   commentCreate: commentCreate,
   commentDelete: commentDelete,
