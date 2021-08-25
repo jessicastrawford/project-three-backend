@@ -16,10 +16,14 @@ router.route('/clubs/:clubId')
   .put(secureRoute, clubs.update)
 
 // * PUBS
+router.route('/pubs')
+  .get(clubs.pubIndex)
+
 router.route('/clubs/:clubId/pubs')
   .post(secureRoute, clubs.pubCreate)
 
 router.route('/clubs/:clubId/pubs/:pubId')
+  .get(clubs.pubShow)
   .delete(secureRoute, clubs.pubDelete) 
 
 // * COMMENTS

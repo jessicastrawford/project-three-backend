@@ -46,9 +46,19 @@ async function seed() {
 
     clubData.forEach(club => {
       club.addedBy = admin
+      const commentText = faker.lorem.sentence()
+      const commentRating = Math.ceil(Math.random() * 5)
+      club.pubs.map(pub => {
+        pub.comments.push({
+          text: commentText,
+          rating: commentRating,
+          addedBy: createdUsers[Math.ceil(Math.random() * 100)],
+        })
+      })
     })
 
     const club = await Club.create(clubData)
+    
     console.log(`🤖 ${club.length} football clubs added to the database`)
   } catch (err) {
     console.log('🤖 Something went wrong...')
