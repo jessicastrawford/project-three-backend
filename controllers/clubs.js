@@ -148,6 +148,20 @@ async function commentCreate(req, res, next) {
   }
 }
 
+async function commentShow(req, res, next) {
+  const { clubId, pubId } = req.params
+  try {
+    const club = await Club.findById(clubId)
+      .populate('addedBy')
+    if (!club) throw new NotFound()
+    const pub = await club.pubs.id(pubId)
+    if (!pub) throw new NotFound()
+    return res.status(200).json(pub.comments)
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function commentDelete(req, res, next) {
   const { clubId, pubId, commentId } = req.params
   const { currentUserId, currentUser } = req
@@ -181,4 +195,5 @@ export default {
   pubDelete: pubDelete,
   commentCreate: commentCreate,
   commentDelete: commentDelete,
+  commentShow: commentShow,
 }
