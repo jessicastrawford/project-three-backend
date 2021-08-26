@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
+// import { clubSchema, pubSchema } from './clubs.js'
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -8,6 +9,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   avatar: { type: String },
   isAdmin: { type: Boolean, default: false },
+  // favoriteClubs: [{ type: mongoose.Schema.ObjectId, ref: 'Club' }],
+  // favoritePubs: [pubSchema],
 })
 
 // ! Comment back in when linking Comments to Users is required

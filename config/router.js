@@ -15,6 +15,9 @@ router.route('/clubs/:clubId')
   .delete(secureRoute, clubs.delete)
   .put(secureRoute, clubs.update)
 
+router.route('/clubs/:clubId/like')
+  .post(secureRoute, clubs.likeClub)
+
 // * PUBS
 router.route('/pubs')
   .get(clubs.pubIndex)
@@ -38,6 +41,10 @@ router.route('/clubs/:clubId/pubs/:pubId/comments/:commentId')
 router.post('/register', auth.register)
 router.post('/login', auth.login)
 router.get('/users', auth.usersIndex)
+
+router.route('/users/:userId')
+  // .put(secureRoute, auth.userUpdate)
+  .get(secureRoute, auth.userShow)
 
 
 export default router

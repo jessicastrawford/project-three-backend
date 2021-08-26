@@ -44,8 +44,38 @@ async function getAllUsers(req, res, next) {
   }
 }
 
+async function getSingleUser(req, res, next) {
+  const { userId } = req.params
+  try {
+    const userToFind = await User.findById(userId)
+      .populate('favorites')
+    if (!userToFind) throw new NotFound()
+    return res.status(200).json(userToFind)
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+// async function userUpdate(req, res, next) {
+//   const { userId } = req.params
+//   try {
+//     const userToUpdate = await User.findByIdAndUpdate(userId)
+//     if (!userToUpdate) {
+//       throw new NotFound()
+//     }
+//     Object.assign(userToUpdate, req.body)
+//     await userToUpdate.save()
+//     return res.status(202).json(userToUpdate)
+//   } catch (err) {
+//     next(err)
+//   }
+// }
+
 export default {
   register: registerUser,
   login: loginUser,
   usersIndex: getAllUsers,
+  userShow: getSingleUser,
+  // userUpdate: userUpdate,
 }
