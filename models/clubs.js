@@ -22,6 +22,7 @@ export const pubSchema = new mongoose.Schema(
     description: { type: String, required: true, maxlength: 350 },
     image: { type: String, required: true },
     addedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    likedBy: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   }
 )
 

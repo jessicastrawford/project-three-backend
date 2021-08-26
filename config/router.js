@@ -29,6 +29,9 @@ router.route('/clubs/:clubId/pubs/:pubId')
   .get(clubs.pubShow)
   .delete(secureRoute, clubs.pubDelete) 
 
+router.route('/clubs/:clubId/pubs/:pubId/like')
+  .post(secureRoute, clubs.likePub)
+
 // * COMMENTS
 router.route('/clubs/:clubId/pubs/:pubId/comments')
   .get(clubs.commentShow)

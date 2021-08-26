@@ -16,6 +16,8 @@ async function clubShow(req, res, next) {
     const clubToFind = await Club.findById(clubId)
       .populate('addedBy')
       .populate('pubs.addedBy')
+      .populate('likedBy')
+      .populate('pubs.likedBy')
 
     if (!clubToFind) throw new NotFound()
     return res.status(200).json(clubToFind)
@@ -152,6 +154,28 @@ async function pubDelete(req, res, next) {
   }
 }
 
+async function togglePubLike(req, res, next) {
+  const { clubId, pubId } = req.params
+  const { currentUserId, currentUser } = req
+  try {
+    const club = await Club.findById(clubId).populate('pubs.likedBy')
+    if (!club) throw new NotFound()
+
+    const pubToLike = await club.pubs.id(pubId)
+    if (!pubToLike) throw new NotFound()
+
+    if (pubToLike.likedBy.find(user => currentUserId.equals(user._id))) {
+      pubToLike.likedBy.remove(currentUser)
+    } else {
+      pubToLike.likedBy.push(currentUser)
+    }
+    await club.save()
+    res.status(202).json(pubToLike)
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function commentCreate(req, res, next) {
   const { clubId, pubId } = req.params
   const { currentUser } = req
@@ -214,6 +238,7 @@ export default {
   pubIndex: pubIndex,
   pubShow: pubShow,
   pubDelete: pubDelete,
+  likePub: togglePubLike,
   commentCreate: commentCreate,
   commentDelete: commentDelete,
   commentShow: commentShow,
