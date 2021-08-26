@@ -12,7 +12,7 @@ const commentSchema = new mongoose.Schema(
   }
 )
 
-const pubSchema = new mongoose.Schema(
+export const pubSchema = new mongoose.Schema(
   {
     pubName: { type: String, required: true },
     comments: [commentSchema],
@@ -25,7 +25,7 @@ const pubSchema = new mongoose.Schema(
   }
 )
 
-const clubSchema = new mongoose.Schema({
+export const clubSchema = new mongoose.Schema({
   clubName: { type: String, required: true },
   league: { type: String, required: true },
   logo: { type: String, required: true },
@@ -38,6 +38,7 @@ const clubSchema = new mongoose.Schema({
   capacity: { type: Number, required: true },
   stadiumInfo: { type: String, required: true },
   addedBy: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
+  likedBy: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
 
   pubs: [pubSchema],
 })

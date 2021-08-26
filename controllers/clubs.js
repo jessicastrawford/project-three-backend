@@ -71,6 +71,26 @@ async function clubUpdate(req, res, next) {
   }
 }
 
+async function toggleClubLike(req, res, next) {
+  const { clubId } = req.params
+  const { currentUserId, currentUser } = req
+  try {
+    const clubToLike = await Club.findById(clubId).populate('likedBy')
+
+    if (!clubToLike) throw new NotFound()
+
+    if (clubToLike.likedBy.find(user => currentUserId.equals(user._id))) {
+      clubToLike.likedBy.remove(currentUser)
+    } else {
+      clubToLike.likedBy.push(currentUser)
+    }
+    await clubToLike.save()
+    res.status(202).json(clubToLike)
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function pubCreate(req, res, next) {
   const { clubId } = req.params
   const { currentUser } = req
@@ -189,6 +209,7 @@ export default {
   show: clubShow,
   delete: clubDelete,
   update: clubUpdate,
+  likeClub: toggleClubLike,
   pubCreate: pubCreate,
   pubIndex: pubIndex,
   pubShow: pubShow,
