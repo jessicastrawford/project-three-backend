@@ -52,7 +52,7 @@ async function seed() {
         pub.comments.push({
           text: commentText,
           rating: commentRating,
-          addedBy: createdUsers[Math.ceil(Math.random() * 100)],
+          addedBy: createdUsers[Math.ceil(Math.random() * 99)],
         })
       })
     })
