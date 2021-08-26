@@ -7,7 +7,7 @@ export default [
     imageTwo: 'https://e0.365dm.com/19/03/2048x1152/skysports-tottenham-hotspur_4618712.jpg',
     imageThree: 'https://www.football-stadiums.co.uk/images/tottenham-stadium/c.jpg',
     latitude: 51.6043,
-    longitude: 0.0678,
+    longitude: -0.0678,
     location: 'Tottenham, London',
     capacity: 62850,
     stadiumInfo: 'The Tottenham Hotspur Stadium is the home of Premier League club Tottenham Hotspur in north London, replacing the club\'s previous stadium, White Hart Lane. With a seating capacity of 62,850, it is the third-largest football stadium in England and the largest club stadium in London',
