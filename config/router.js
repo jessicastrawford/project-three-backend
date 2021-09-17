@@ -45,8 +45,7 @@ router.post('/register', auth.register)
 router.post('/login', auth.login)
 router.get('/users', auth.usersIndex)
 
-router.route('/users/:userId')
-  // .put(secureRoute, auth.userUpdate)
+router.route('/user')
   .get(secureRoute, auth.userShow)
 
 

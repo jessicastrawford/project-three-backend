@@ -56,22 +56,6 @@ async function getSingleUser(req, res, next) {
   }
 }
 
-
-// async function userUpdate(req, res, next) {
-//   const { userId } = req.params
-//   try {
-//     const userToUpdate = await User.findByIdAndUpdate(userId)
-//     if (!userToUpdate) {
-//       throw new NotFound()
-//     }
-//     Object.assign(userToUpdate, req.body)
-//     await userToUpdate.save()
-//     return res.status(202).json(userToUpdate)
-//   } catch (err) {
-//     next(err)
-//   }
-// }
-
 export default {
   register: registerUser,
   login: loginUser,
