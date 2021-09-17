@@ -96,10 +96,13 @@ async function toggleClubLike(req, res, next) {
 async function pubCreate(req, res, next) {
   const { clubId } = req.params
   const { currentUser } = req
+  console.log(clubId)
   try {
+    console.log(clubId)
     const club = await Club.findById(clubId)
     if (!club) throw new NotFound()
     const createdPub = club.pubs.create({ ...req.body, addedBy: currentUser })
+    console.log(club)
     club.pubs.push(createdPub)
     await club.save()
     return res.status(201).json(club)
