@@ -264,7 +264,7 @@ export default Loading
 
 * Unfortunately we didn’t have a username in the comments object, therefore if we were to have had a little more time I would have liked to have gone back and added a addedByUsername into the backend commentSchema to add a name rather than a number to the comment.
 
-```python
+```node
 const commentSchema = new mongoose.Schema(
   {
     text: { type: String, required: true, maxlength: 350 },
