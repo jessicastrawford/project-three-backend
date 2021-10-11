@@ -33,7 +33,7 @@ __Frontend__
 * JavaScript
 * React.js
 * Axios
-* Bootsrap
+* Bootstrap
 * MapBox
 * Cloundanary
 * React router dom
